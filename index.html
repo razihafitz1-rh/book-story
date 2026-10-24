@@ -24,17 +24,12 @@
       --font-body: 'Lora', serif;
       --font-utility: 'Inter', sans-serif;
 
-      /* Fluid Typography & Spacing */
       --step-0: clamp(1rem, 0.95rem + 0.25vw, 1.25rem);
       --step-1: clamp(1.2rem, 1.1rem + 0.5vw, 1.5rem);
       --step-2: clamp(1.5rem, 1.3rem + 1vw, 2rem);
-      --step-3: clamp(2.2rem, 1.8rem + 2vw, 3.5rem);
+      --step-3: clamp(2.2rem, 1.8rem + 2vw, 3.8rem);
 
-      --section-padding: clamp(2rem, 5vw, 4rem);
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) { color-scheme: dark; }
+      --section-padding: clamp(2rem, 8vw, 5rem);
     }
 
     body {
@@ -42,29 +37,56 @@
       color: var(--fg);
       font-family: var(--font-body);
       margin: 0;
-      transition: background 1.5s ease, color 1.5s ease;
+      transition: background 1.8s cubic-bezier(0.4, 0, 0.2, 1), color 1.8s ease;
       overflow-x: hidden;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
     }
 
+    /* Cinematic Background */
+    .bg-image {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      background-size: cover;
+      background-position: center;
+      transition: background-image 1.8s cubic-bezier(0.4, 0, 0.2, 1);
+      filter: brightness(0.3) grayscale(15%);
+      transform: scale(1.05);
+    }
+
+    /* Vignette Overlay for better text contrast */
+    .bg-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.6) 100%);
+      pointer-events: none;
+    }
+
     .container {
-      padding: var(--section-padding) max(1rem, env(safe-area-inset-left));
-      padding-right: max(1rem, env(safe-area-inset-right));
-      max-width: 720px;
+      padding: var(--section-padding) max(1.5rem, env(safe-area-inset-left));
+      padding-right: max(1.5rem, env(safe-area-inset-right));
+      max-width: 800px;
       margin: 0 auto;
       position: relative;
       z-index: 2;
     }
 
     .story-section {
-      min-height: 100dvh; /* Dynamic Viewport Height */
+      min-height: 100dvh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 1s ease, transform 1s ease;
+      transform: translateY(40px);
+      transition: opacity 1.2s ease, transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
       pointer-events: none;
       position: absolute;
       width: 100%;
@@ -87,22 +109,25 @@
       text-wrap: balance;
       margin-bottom: 1.5rem;
       color: var(--accent);
-      letter-spacing: -0.02em;
+      letter-spacing: -0.03em;
       line-height: 1.1;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.5);
     }
 
     .story-text {
       font-size: var(--step-0);
-      margin-bottom: 2rem;
+      margin-bottom: 2.5rem;
       text-align: justify;
       hyphens: auto;
       cursor: pointer;
-      transition: color 0.3s ease;
-      max-width: 65ch; /* Optimal line length for readability */
+      transition: color 0.4s ease, transform 0.4s ease;
+      max-width: 65ch;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
     }
 
     .story-text:hover {
       color: var(--accent);
+      transform: translateX(5px);
     }
 
     .reflection {
@@ -110,65 +135,57 @@
       font-style: italic;
       font-size: var(--step-1);
       text-align: center;
-      padding: 1.5rem 0;
-      border-top: 1px solid var(--accent);
+      padding: 2rem 0;
+      border-top: 1px solid rgba(255,255,255,0.1);
       margin-top: 1rem;
       color: var(--accent);
       line-height: 1.4;
+      opacity: 0.9;
     }
 
     .nav-controls {
       position: fixed;
-      bottom: clamp(1.5rem, 5vh, 3rem);
+      bottom: clamp(1.5rem, 6vh, 3rem);
       left: 50%;
       transform: translateX(-50%);
       z-index: 100;
       display: flex;
-      gap: 1rem;
+      gap: 1.5rem;
       font-family: var(--font-utility);
-      width: auto;
-      padding: 0 1rem;
     }
 
     button {
-      background: rgba(0,0,0,0.6);
-      border: 1px solid var(--accent);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       color: var(--fg);
-      padding: 0.75rem 1.5rem; /* Larger tap targets (min 44px) */
+      padding: 0.8rem 2rem;
       cursor: pointer;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
-      transition: all 0.3s ease;
-      border-radius: 4px;
-      backdrop-filter: blur(10px);
+      letter-spacing: 0.15em;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 50px;
+      backdrop-filter: blur(15px);
       -webkit-tap-highlight-color: transparent;
-      min-width: 100px;
+      box-shadow: 0 8px 32px 0 rgba(0,0,0,0.37);
+    }
+
+    button:hover {
+      background: var(--accent);
+      color: var(--bg);
+      border-color: var(--accent);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.4);
     }
 
     button:active {
       transform: scale(0.95);
-      background: var(--accent);
-      color: var(--bg);
     }
 
     .forest-bg { --accent: var(--accent-forest); --fg: var(--fg-forest); }
     .space-bg { --accent: var(--accent-space); --fg: var(--fg-space); }
     .time-bg { --accent: var(--accent-time); --fg: var(--fg-time); }
-
-    .bg-image {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      background-size: cover;
-      background-position: center;
-      transition: background-image 1.5s ease-in-out;
-      filter: brightness(0.35) grayscale(10%);
-    }
 
     .ambient-particle {
       position: fixed;
@@ -180,13 +197,13 @@
       opacity: 0.3;
     }
 
-    /* Mobile specific optimizations */
     @media (max-width: 600px) {
       .container {
         padding-block: 2rem;
       }
       h1 {
         text-align: center;
+        font-size: var(--step-2);
       }
       .story-text {
         text-align: center;
@@ -200,6 +217,7 @@
       button {
         flex: 1;
         padding: 1rem;
+        font-size: 0.65rem;
       }
     }
   </style>
@@ -208,6 +226,7 @@
 <body>
 
 <div id="bgImage" class="bg-image" style="background-image: url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1920&q=80');"></div>
+<div class="bg-overlay"></div>
 
 <div class="nav-controls">
   <button id="prevBtn" onclick="changeStory(-1)">Previous</button>
@@ -216,7 +235,7 @@
 
 <div class="container">
   <section id="forest" class="story-section active forest-bg">
-    <h1>The Forest</h1>
+    <h1 class="fade-in">The Forest</h1>
     <div class="story-text">
       The air here is thick with the scent of damp loam and ancient cedar, a heavy, comforting blanket that muffles the frantic pulse of the outside world. To walk beneath these emerald vaults is to enter a conversation that has been unfolding for millennia.
 
@@ -230,7 +249,7 @@
   </section>
 
   <section id="space" class="story-section space-bg">
-    <h1>The Space</h1>
+    <h1 class="fade-in">The Space</h1>
     <div class="story-text">
       Beyond the last veil of atmosphere lies the Great Silence—a vacuum so absolute it feels like a physical weight. Here, time does not tick; it drifts. You are suspended in a velvet ink, surrounded by the ghost-light of stars that died a billion years before your first breath.
 
@@ -244,7 +263,7 @@
   </section>
 
   <section id="time" class="story-section time-bg">
-    <h1>The Time</h1>
+    <h1 class="fade-in">The Time</h1>
     <div class="story-text">
       Time is not a river flowing in one direction, but an ocean where every moment exists simultaneously, layered like the rings of an ancient tree. We perceive only the ripple, forgetting that the depth holds the beginning and the end in a single, breathless embrace.
 
