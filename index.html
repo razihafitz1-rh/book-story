@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Whispers of Earth and Ether</title>
+  <meta name="claude:viewport-fit-sides" content="cover">
+  <style>
+    :root {
+      --bg-forest: #0d1a0d;
+      --fg-forest: #d1dccb;
+      --accent-forest: #7ba87b;
+      --bg-space: #02040a;
+      --fg-space: #e0e6ed;
+      --accent-space: #a8b8ff;
+      --bg-time: #1a1410;
+      --fg-time: #e8dcca;
+      --accent-time: #cfa46d;
+
+      --bg: var(--bg-forest);
+      --fg: var(--fg-forest);
+      --accent: var(--accent-forest);
+
+      --font-display: 'Playfair Display', serif;
+      --font-body: 'Lora', serif;
+      --font-utility: 'Inter', sans-serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) { color-scheme: dark; }
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-body);
+      margin: 0;
+      transition: background 1.5s ease, color 1.5s ease;
+      overflow-x: hidden;
+      line-height: 1.7;
+    }
+
+    .container {
+      padding-left: max(16px, env(safe-area-inset-left, 0px));
+      padding-right: max(16px, env(safe-area-inset-right, 0px));
+      padding-block: 4rem;
+      max-width: 680px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .story-section {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 1s ease, transform 1s ease;
+      pointer-events: none;
+      position: absolute;
+      width: 100%;
+      left: 0;
+    }
+
+    .story-section.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: all;
+      position: relative;
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      font-weight: 400;
+      text-wrap: balance;
+      margin-bottom: 2rem;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+    }
+
+    .story-text {
+      font-size: 1.15rem;
+      margin-bottom: 3rem;
+      text-align: justify;
+      hyphens: auto;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .story-text:hover {
+      color: var(--accent);
+    }
+
+    .reflection {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.4rem;
+      text-align: center;
+      padding: 2rem 0;
+      border-top: 1px solid var(--accent);
+      margin-top: 2rem;
+      color: var(--accent);
+    }
+
+    .nav-controls {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      display: flex;
+      gap: 1rem;
+      font-family: var(--font-utility);
+    }
+
+    button {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--accent);
+      color: var(--fg);
+      padding: 0.5rem 1.2rem;
+      cursor: pointer;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      transition: all 0.3s ease;
+      border-radius: 2px;
+      backdrop-filter: blur(5px);
+    }
+
+    button:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    .forest-bg { --accent: var(--accent-forest); --fg: var(--fg-forest); }
+    .space-bg { --accent: var(--accent-space); --fg: var(--fg-space); }
+    .time-bg { --accent: var(--accent-time); --fg: var(--fg-time); }
+
+    /* Background Image Layer */
+    .bg-image {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background-size: cover;
+      background-position: center;
+      transition: background-image 1.5s ease-in-out;
+      filter: brightness(0.4) grayscale(10%);
+    }
+
+    .ambient-particle {
+      position: fixed;
+      width: 2px;
+      height: 2px;
+      background: var(--accent);
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.3;
+    }
+
+    @media (max-width: 400px) {
+      h1 { font-size: 2.2rem; }
+      .story-text { font-size: 1.05rem; }
+    }
+  </style>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Lora:ital,wght@0,400;0,500;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap">
+</head>
+<body>
+
+<div id="bgImage" class="bg-image" style="background-image: url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1920&q=80');"></div>
+
+<div class="nav-controls">
+  <button id="prevBtn" onclick="changeStory(-1)">Previous</button>
+  <button id="nextBtn" onclick="changeStory(1)">Next</button>
+</div>
+
+<div class="container">
+  <section id="forest" class="story-section active forest-bg">
+    <h1>The Forest</h1>
+    <div class="story-text">
+      The air here is thick with the scent of damp loam and ancient cedar, a heavy, comforting blanket that muffles the frantic pulse of the outside world. To walk beneath these emerald vaults is to enter a conversation that has been unfolding for millennia.
+
+      Beneath the velvet moss, a hidden empire breathes. The mycelium—a silver lace of infinite threads—weaves through the dark earth, bridging the gap between the towering pines and the smallest fern. Here, wisdom is not spoken, but shared in the quiet chemistry of the roots; a warning of drought, a gift of sugar, a collective memory of the first frost.
+
+      Everything is connected. The slow, rhythmic sigh of the wind through the canopy is the breath of a single, colossal organism. In the stillness, you realize you are not a visitor, but a temporary extension of this green consciousness, grounded and held by the patient heart of the earth.
+    </div>
+    <div class="reflection">
+      "Dalam diamnya alam, kita menemukan bahasa yang tak butuh kata; hanya perlu hati yang mau mendengar."
+    </div>
+  </section>
+
+  <section id="space" class="story-section space-bg">
+    <h1>The Space</h1>
+    <div class="story-text">
+      Beyond the last veil of atmosphere lies the Great Silence—a vacuum so absolute it feels like a physical weight. Here, time does not tick; it drifts. You are suspended in a velvet ink, surrounded by the ghost-light of stars that died a billion years before your first breath.
+
+      In the heart of a nebular cloud, gravity begins its slow, violent dance. Dust and gas collapse in a shimmering spiral, condensing until a spark of impossible heat ignites. A star is born—a sudden, blinding scream of light in the dark. It is a terrifying scale of creation, yet in the curve of a distant galaxy, there is a profound, mathematical peace.
+
+      You are a speck of carbon and stardust, a momentary flicker in the cosmic timeline. Yet, as you gaze into the infinite, you feel a strange, humming recognition. You are not merely observing the dance; you are a part of it. The iron in your blood was forged in the belly of a dying sun, making you a child of the void, meaningful not because of your size, but because you are the universe waking up to see itself.
+    </div>
+    <div class="reflection">
+      "Kita adalah debu bintang yang belajar merindu, bagian kecil dari tarian abadi yang tak bertepi."
+    </div>
+  </section>
+
+  <section id="time" class="story-section time-bg">
+    <h1>The Time</h1>
+    <div class="story-text">
+      Time is not a river flowing in one direction, but an ocean where every moment exists simultaneously, layered like the rings of an ancient tree. We perceive only the ripple, forgetting that the depth holds the beginning and the end in a single, breathless embrace.
+
+      We chase the future as if it were a distant shore, while clinging to the ghosts of yesterday, oblivious to the thin, shimmering line of the 'Now'. But look closer: the scar on your palm is a map of a moment long gone, and the dream you have tonight is a whisper from a version of you that hasn't yet arrived.
+
+      To master time is not to stop it, but to surrender to its rhythm. To realize that every goodbye is a secret hello, and every ending is merely the soil for a new beginning. We are the architects of our own eternity, building monuments of memory and love in the brief window between two silences.
+    </div>
+    <div class="reflection">
+      "Waktu bukan tentang seberapa lama kita hidup, tapi tentang seberapa dalam kita hadir dalam setiap helaan napas."
+    </div>
+  </section>
+</div>
+
+<script>
+  let currentStory = 0;
+  const stories = document.querySelectorAll('.story-section');
+  const body = document.body;
+  const bgImage = document.getElementById('bgImage');
+
+  const images = {
+    forest: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1920&q=80',
+    space: 'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=1920&q=80',
+    time: 'https://images.unsplash.com/photo-1501139077793-61777bc95671?auto=format&fit=crop&w=1920&q=80'
+  };
+
+  function changeStory(dir) {
+    stories[currentStory].classList.remove('active');
+    currentStory = (currentStory + dir + stories.length) % stories.length;
+    stories[currentStory].classList.add('active');
+
+    const theme = stories[currentStory].id;
+
+    // Update Background Image
+    bgImage.style.backgroundImage = `url('${images[theme]}')`;
+
+    if (theme === 'forest') {
+      body.style.background = 'var(--bg-forest)';
+      body.style.color = 'var(--fg-forest)';
+    } else if (theme === 'space') {
+      body.style.background = 'var(--bg-space)';
+      body.style.color = 'var(--fg-space)';
+    } else if (theme === 'time') {
+      body.style.background = 'var(--bg-time)';
+      body.style.color = 'var(--fg-time)';
+    }
+  }
+
+  document.querySelectorAll('.story-text').forEach(text => {
+    text.addEventListener('click', () => {
+      text.style.color = 'var(--accent)';
+      setTimeout(() => {
+        text.style.color = 'var(--fg)';
+      }, 1000);
+    });
+  });
+
+  function createParticles() {
+    for (let i = 0; i < 60; i++) {
+      const p = document.createElement('div');
+      p.className = 'ambient-particle';
+      p.style.left = Math.random() * 100 + 'vw';
+      p.style.top = Math.random() * 100 + 'vh';
+      p.style.opacity = Math.random() * 0.5;
+
+      const duration = 10 + Math.random() * 20;
+      const xMove = (Math.random() - 0.5) * 100;
+      const yMove = (Math.random() - 0.5) * 100;
+
+      p.animate([
+        { transform: 'translate(0, 0)', opacity: 0.2 },
+        { transform: `translate(${xMove}px, ${yMove}px)`, opacity: 0.6 },
+        { transform: 'translate(0, 0)', opacity: 0.2 }
+      ], {
+        duration: duration * 1000,
+        iterations: Infinity,
+        easing: 'ease-in-out'
+      });
+
+      document.body.appendChild(p);
+    }
+  }
+
+  createParticles();
+</script>
+</body>
+</html>
