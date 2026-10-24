@@ -35,3 +35,13 @@ If you want to run this locally:
 - **JavaScript**: For the interactive navigation and particle system.
 - **Google Fonts**: Playfair Display, Lora, and Inter for a professional typographic feel.
 - **Unsplash API**: For high-quality thematic imagery.
+
+## 🤝 Contributors
+
+This project is a collaborative effort between human creativity and artificial intelligence:
+
+- **[Raziha Fitz](https://github.com/razihafitz1-rh)** - Visionary, Poet, and Project Lead.
+- **Claude Code** - AI Architect, Web Developer, and Digital Curator.
+
+---
+*Created with ❤️ and 🤖*
