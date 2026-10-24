@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Whispers of Earth and Ether</title>
-  <meta name="claude:viewport-fit-sides" content="cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <style>
     :root {
       --bg-forest: #0d1a0d;
@@ -23,6 +23,14 @@
       --font-display: 'Playfair Display', serif;
       --font-body: 'Lora', serif;
       --font-utility: 'Inter', sans-serif;
+
+      /* Fluid Typography & Spacing */
+      --step-0: clamp(1rem, 0.95rem + 0.25vw, 1.25rem);
+      --step-1: clamp(1.2rem, 1.1rem + 0.5vw, 1.5rem);
+      --step-2: clamp(1.5rem, 1.3rem + 1vw, 2rem);
+      --step-3: clamp(2.2rem, 1.8rem + 2vw, 3.5rem);
+
+      --section-padding: clamp(2rem, 5vw, 4rem);
     }
 
     @media (prefers-color-scheme: dark) {
@@ -36,31 +44,33 @@
       margin: 0;
       transition: background 1.5s ease, color 1.5s ease;
       overflow-x: hidden;
-      line-height: 1.7;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
 
     .container {
-      padding-left: max(16px, env(safe-area-inset-left, 0px));
-      padding-right: max(16px, env(safe-area-inset-right, 0px));
-      padding-block: 4rem;
-      max-width: 680px;
+      padding: var(--section-padding) max(1rem, env(safe-area-inset-left));
+      padding-right: max(1rem, env(safe-area-inset-right));
+      max-width: 720px;
       margin: 0 auto;
       position: relative;
       z-index: 2;
     }
 
     .story-section {
-      min-height: 100vh;
+      min-height: 100dvh; /* Dynamic Viewport Height */
       display: flex;
       flex-direction: column;
       justify-content: center;
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(30px);
       transition: opacity 1s ease, transform 1s ease;
       pointer-events: none;
       position: absolute;
       width: 100%;
       left: 0;
+      box-sizing: border-box;
+      padding: 0 1rem;
     }
 
     .story-section.active {
@@ -72,21 +82,23 @@
 
     h1 {
       font-family: var(--font-display);
-      font-size: 3rem;
+      font-size: var(--step-3);
       font-weight: 400;
       text-wrap: balance;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
       color: var(--accent);
       letter-spacing: -0.02em;
+      line-height: 1.1;
     }
 
     .story-text {
-      font-size: 1.15rem;
-      margin-bottom: 3rem;
+      font-size: var(--step-0);
+      margin-bottom: 2rem;
       text-align: justify;
       hyphens: auto;
       cursor: pointer;
       transition: color 0.3s ease;
+      max-width: 65ch; /* Optimal line length for readability */
     }
 
     .story-text:hover {
@@ -96,40 +108,47 @@
     .reflection {
       font-family: var(--font-display);
       font-style: italic;
-      font-size: 1.4rem;
+      font-size: var(--step-1);
       text-align: center;
-      padding: 2rem 0;
+      padding: 1.5rem 0;
       border-top: 1px solid var(--accent);
-      margin-top: 2rem;
+      margin-top: 1rem;
       color: var(--accent);
+      line-height: 1.4;
     }
 
     .nav-controls {
       position: fixed;
-      bottom: 2rem;
+      bottom: clamp(1.5rem, 5vh, 3rem);
       left: 50%;
       transform: translateX(-50%);
       z-index: 100;
       display: flex;
       gap: 1rem;
       font-family: var(--font-utility);
+      width: auto;
+      padding: 0 1rem;
     }
 
     button {
-      background: rgba(0,0,0,0.4);
+      background: rgba(0,0,0,0.6);
       border: 1px solid var(--accent);
       color: var(--fg);
-      padding: 0.5rem 1.2rem;
+      padding: 0.75rem 1.5rem; /* Larger tap targets (min 44px) */
       cursor: pointer;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
+      font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.1em;
       transition: all 0.3s ease;
-      border-radius: 2px;
-      backdrop-filter: blur(5px);
+      border-radius: 4px;
+      backdrop-filter: blur(10px);
+      -webkit-tap-highlight-color: transparent;
+      min-width: 100px;
     }
 
-    button:hover {
+    button:active {
+      transform: scale(0.95);
       background: var(--accent);
       color: var(--bg);
     }
@@ -138,7 +157,6 @@
     .space-bg { --accent: var(--accent-space); --fg: var(--fg-space); }
     .time-bg { --accent: var(--accent-time); --fg: var(--fg-time); }
 
-    /* Background Image Layer */
     .bg-image {
       position: fixed;
       top: 0;
@@ -149,7 +167,7 @@
       background-size: cover;
       background-position: center;
       transition: background-image 1.5s ease-in-out;
-      filter: brightness(0.4) grayscale(10%);
+      filter: brightness(0.35) grayscale(10%);
     }
 
     .ambient-particle {
@@ -162,9 +180,27 @@
       opacity: 0.3;
     }
 
-    @media (max-width: 400px) {
-      h1 { font-size: 2.2rem; }
-      .story-text { font-size: 1.05rem; }
+    /* Mobile specific optimizations */
+    @media (max-width: 600px) {
+      .container {
+        padding-block: 2rem;
+      }
+      h1 {
+        text-align: center;
+      }
+      .story-text {
+        text-align: center;
+        font-size: 1.1rem;
+      }
+      .nav-controls {
+        bottom: 2rem;
+        width: 90%;
+        justify-content: center;
+      }
+      button {
+        flex: 1;
+        padding: 1rem;
+      }
     }
   </style>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Lora:ital,wght@0,400;0,500;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap">
@@ -240,8 +276,6 @@
     stories[currentStory].classList.add('active');
 
     const theme = stories[currentStory].id;
-
-    // Update Background Image
     bgImage.style.backgroundImage = `url('${images[theme]}')`;
 
     if (theme === 'forest') {
@@ -295,4 +329,3 @@
 </script>
 </body>
 </html>
-<!-- Triggering GitHub Pages Deployment -->
